@@ -1,5 +1,5 @@
 #!/bin/bash
-# Trojan Go
+# Trojan Go Auto Setup 
 # =========================
 
 # Domain 
@@ -8,43 +8,36 @@ domain=$(cat /etc/v2ray/domain)
 # Uuid Service
 uuid=$(cat /proc/sys/kernel/random/uuid)
 
-# Install Trojan Go
-latest_version="$(curl -s "https://api.github.com/repos/p4gefau1t/trojan-go/releases" | grep tag_name | sed -E 's/.*"v(.*)".*/\1/' | head -n 1)"
-trojango_link="https://github.com/p4gefau1t/trojan-go/releases/download/v${latest_version}/trojan-go-linux-amd64.zip"
-mkdir -p "/usr/bin/trojan-go"
-mkdir -p "/etc/trojan-go"
-cd `mktemp -d`
-curl -sL "${trojango_link}" -o trojan-go.zip
-unzip -q trojan-go.zip && rm -rf trojan-go.zip
-mv trojan-go /usr/local/bin/trojan-go
-chmod +x /usr/local/bin/trojan-go
-mkdir /var/log/trojan-go/
+# Trojan Go Akun 
+mkdir -p /etc/trojan-go/
 touch /etc/trojan-go/akun.conf
+touch /etc/trojan-go/uuid.txt
+
+# Installing Trojan Go
+mkdir -p /etc/trojan-go/
+chmod 777 /etc/trojan-go/
 touch /etc/trojan-go/trojan-go.pid
-touch /var/log/trojan-go/trojan-go.log
-
-
-# Buat Config Trojan Go
-cat > /etc/trojan-go/config.json << END
+wget -O /etc/trojan-go/trojan-go https://github.com/bokir-tampan/ranjau-darate/raw/main/trojan-go
+chmod +x /etc/trojan-go/trojan-go
+cat <<EOF > /etc/trojan-go/config.json
 {
-  "run_type": "server",
-  "local_addr": "0.0.0.0",
-  "local_port": 4443,
-  "remote_addr": "127.0.0.1",
-  "remote_port": 81,
-  "log_level": 1,
-  "log_file": "/var/log/trojan-go/trojan-go.log",
- "password": [
-      "$uuid"
-  ],
-  },
-  "disable_http_check": true,
+    "run_type": "server",
+    "local_addr": "0.0.0.0",
+    "local_port": 9443,
+    "remote_addr": "127.0.0.1",
+    "remote_port": 81,
+    "log_level": 1,
+    "log_file": "",
+    "password": [
+        "$uuid"
+    ],
+  "disable_http_check": false,
   "udp_timeout": 60,
   "ssl": {
-    "verify": false,
-    "verify_hostname": false,
+    "verify": true,
+    "verify_hostname": true,
     "cert": "/etc/xray/xray.crt",
-    "key": "/etc/xray/xray.key",
+    "key": "etc/xray/xray.key",
     "key_password": "",
     "cipher": "",
     "curves": "",
@@ -57,76 +50,48 @@ cat > /etc/trojan-go/config.json << END
     "reuse_session": true,
     "plain_http_response": "",
     "fallback_addr": "127.0.0.1",
-    "fallback_port": 4443,
-    "fingerprint": "firefox"
+    "fallback_port": 2096,
+    "fingerprint": ""
   },
   "tcp": {
     "no_delay": true,
     "keep_alive": true,
-    "prefer_ipv4": true
-  },
-  "mux": {
-    "enabled": false,
-    "concurrency": 8,
-    "idle_timeout": 60
+    "prefer_ipv4": false
   },
   "websocket": {
     "enabled": true,
-    "path": "/gandring",
+    "path": "/bokir_tampan",
     "host": "$domain"
-  },
-    "api": {
-    "enabled": false,
-    "api_addr": "",
-    "api_port": 0,
-    "ssl": {
-      "enabled": false,
-      "key": "",
-      "cert": "",
-      "verify_client": false,
-      "client_cert": []
-    }
   }
 }
-END
-
-# Installing Trojan Go Service
-cat > /etc/systemd/system/trojan-go.service << END
+EOF
+cat <<EOF > /etc/systemd/system/trojan-go.service
 [Unit]
-Description=Trojan-Go Service By gandring
-Documentation=https://github.com/Gandring15/vps/main/
+Description=Trojan-Go  By BokirTampan
+Documentation=https://p4gefau1t.github.io/trojan-go/
 After=network.target nss-lookup.target
-
 [Service]
 User=root
 NoNewPrivileges=true
-ExecStart=/usr/local/bin/trojan-go -config /etc/trojan-go/config.json
+ExecStart=/etc/trojan-go/trojan-go -config /etc/trojan-go/config.json
 Restart=on-failure
-RestartPreventExitStatus=23
-LimitNPROC=10000
-LimitNOFILE=1000000
-
+RestartSec=10s
+LimitNOFILE=infinity
 [Install]
 WantedBy=multi-user.target
-END
+EOF
 
-# Trojan Go Uuid
-cat > /etc/trojan-go/uuid.txt << END
+cat <<EOF > /etc/trojan-go/uuid.txt
 $uuid
-END
-
-# restart
-iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport 4443 -j ACCEPT
-iptables -I INPUT -m state --state NEW -m udp -p udp --dport 4443 -j ACCEPT
-iptables-save > /etc/iptables.up.rules
-iptables-restore -t < /etc/iptables.up.rules
+EOF
+iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport 9443 -j ACCEPT
+iptables -I INPUT -m state --state NEW -m udp -p udp --dport 9443 -j ACCEPT
+iptables-save >/etc/iptables.rules.v4
 netfilter-persistent save
 netfilter-persistent reload
 systemctl daemon-reload
-systemctl stop trojan-go
-systemctl start trojan-go
-systemctl enable trojan-go
-systemctl restart trojan-go
 
-rm -f trgo.sh
-mv /root/domain /etc/v2ray
+# Starting
+systemctl daemon-reload
+systemctl enable trojan-go.service
+systemctl start trojan-go.service
