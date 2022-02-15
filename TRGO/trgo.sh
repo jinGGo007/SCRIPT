@@ -31,7 +31,7 @@ cat > /etc/trojan-go/config.json << END
   "local_addr": "0.0.0.0",
   "local_port": 4443,
   "remote_addr": "127.0.0.1",
-  "remote_port": 1421,
+  "remote_port": 81,
   "log_level": 1,
   "log_file": "/var/log/trojan-go/trojan-go.log",
  "password": [
@@ -57,7 +57,7 @@ cat > /etc/trojan-go/config.json << END
     "reuse_session": true,
     "plain_http_response": "",
     "fallback_addr": "127.0.0.1",
-    "fallback_port": 0,
+    "fallback_port": 4443,
     "fingerprint": "firefox"
   },
   "tcp": {
