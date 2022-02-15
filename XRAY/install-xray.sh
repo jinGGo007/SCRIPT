@@ -44,12 +44,6 @@ chmod +x /usr/local/bin/xray
 mkdir -p /var/log/xray/
 touch /etc/xray/xray.pid
 
-mkdir /root/.acme.sh
-curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh
-chmod +x /root/.acme.sh/acme.sh
-/root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256
-~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc
-service squid start
 uuid=$(cat /proc/sys/kernel/random/uuid)
 
 # Buat Config Xray TLS
@@ -620,3 +614,15 @@ systemctl restart xray@vless-grpc
 cd
 rm -f install-xray.sh
 mv /root/domain /etc/v2ray
+
+#install trgo
+wget https://raw.githubusercontent.com/jinGGo007/SCRIPT/main/TRGO/trgo.sh && chmod +x trgo.sh && ./trgo.sh
+rm -f /root/trgo.sh
+
+mkdir /root/.acme.sh
+curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh
+chmod +x /root/.acme.sh/acme.sh
+/root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256
+~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc
+service squid start
+
