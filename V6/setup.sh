@@ -121,7 +121,6 @@ sleep 2
 clear
 
 rm -f /root/ssh-vpn.sh
-rm -f /root/ins-vt.sh
 rm -f /root/ohp.sh
 
 clear
