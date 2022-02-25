@@ -12,5 +12,5 @@ wget https://raw.githubusercontent.com/jinGGo007/SCRIPT/main/setup.sh && chmod +
 
 # INSTALL ENC
 ```html
-wget https://raw.githubusercontent.com/jinGGo007/SCRIPT/main/setup-enc.sh && chmod +x setup-enc.sh && .setup-enc.sh
+wget https://raw.githubusercontent.com/jinGGo007/SCRIPT/main/setup-enc.sh && chmod +x setup-enc.sh && ./setup-enc.sh
   ```
