@@ -10,8 +10,7 @@ MYIP2="s/xxxxxxxxx/$MYIP/g";
 ANU=$(ip -o $ANU -4 route show to default | awk '{print $5}');
 
 # Install OpenVPN dan Easy-RSA
-apt-get update && apt-get install openvpn -y
-apt install easy-rsa unzip -y
+apt install openvpn easy-rsa unzip -y
 apt install openssl iptables iptables-persistent -y
 mkdir -p /etc/openvpn/server/easy-rsa/
 cd /etc/openvpn/
@@ -55,6 +54,7 @@ nobind
 persist-key
 persist-tun
 cipher none
+ncp-disable
 auth none
 comp-lzo 
 verb 3
@@ -79,6 +79,7 @@ nobind
 persist-key
 persist-tun
 cipher none
+ncp-disable
 auth none
 comp-lzo
 verb 3
@@ -103,6 +104,7 @@ nobind
 persist-key
 persist-tun
 cipher none
+ncp-disable
 auth none
 comp-lzo 
 verb 3
