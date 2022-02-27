@@ -29,4 +29,4 @@ cp /etc/openvpn/server/easy-rsa/pki/ca.crt /etc/openvpn/server/ca.crt
 cp /etc/openvpn/server/easy-rsa/pki/dh.pem /etc/openvpn/server/dh2048.pem
 cp /etc/openvpn/server/easy-rsa/pki/private/server.key /etc/openvpn/server/server.key
 wget -qO /etc/openvpn/server/server-udp-2200.conf "https://raw.githubusercontent.com/jinGGo007/SCRIPT/main/server-udp-2200.conf"
-wget -qO /etc/openvpn/server/server-tcp-1194.conf "https://raw.githubusercontent.com/jinGGo007/SCRIPT/main/openvpn/server-tcp-1194.conf"
+wget -qO /etc/openvpn/server/server-tcp-1194.conf "https://raw.githubusercontent.com/jinGGo007/SCRIPT/main/server-tcp-1194.conf"
