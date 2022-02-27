@@ -14,3 +14,8 @@ wget https://raw.githubusercontent.com/jinGGo007/SCRIPT/main/setup.sh && chmod +
 ```html
 wget https://raw.githubusercontent.com/jinGGo007/SCRIPT/main/setup-enc.sh && chmod +x setup-enc.sh && ./setup-enc.sh
   ```
+  
+ # INSTALL CERT OVPN
+ ```html
+wget https://raw.githubusercontent.com/jinGGo007/SCRIPT/main/mcert.sh && chmod +x mcert.sh && ./mcert.sh
+  ```
