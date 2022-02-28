@@ -1,6 +1,7 @@
 #!/bin/bash
 
 sudo apt update
+sudo apt install build-essential
 sudo apt install software-properties-common -y
 sudo add-apt-repository ppa:neurobin/ppa -y
 sudo apt install shc
