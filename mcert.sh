@@ -24,12 +24,11 @@ cd /etc/openvpn/easy-rsa
 ./easyrsa build-server-full server nopass
 
 cd
-mkdir /etc/openvpn/server
-cp /etc/openvpn/easy-rsa/pki/issued/server.crt /etc/openvpn/server/
-cp /etc/openvpn/easy-rsa/pki/ca.crt /etc/openvpn/server/
-cp /etc/openvpn/easy-rsa/pki/dh.pem /etc/openvpn/server/
-cp /etc/openvpn/easy-rsa/pki/private/ca.key /etc/openvpn/server/
-cp /etc/openvpn/easy-rsa/pki/private/server.key /etc/openvpn/server/
+cp /etc/openvpn/easy-rsa/pki/issued/server.crt /etc/openvpn/server/server.crt
+cp /etc/openvpn/easy-rsa/pki/ca.crt /etc/openvpn/server/ca.crt
+cp /etc/openvpn/easy-rsa/pki/dh.pem /etc/openvpn/server/dh2048.pem
+cp /etc/openvpn/easy-rsa/pki/private/ca.key /etc/openvpn/server/ca.key
+cp /etc/openvpn/easy-rsa/pki/private/server.key /etc/openvpn/server/server.key
 
 # generate key for tls-auth
 openvpn --genkey --secret /etc/openvpn/server/ta.key
